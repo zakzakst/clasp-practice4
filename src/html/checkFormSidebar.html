@@ -9,6 +9,92 @@
   </head>
 
   <body>
-    <button type="button" class="button is-primary">ボタン</button>
+    <div class="p-4">
+      <div>
+        <button
+          type="button"
+          class="button is-dark is-fullwidth"
+          id="show-data"
+        >
+          データを表示
+        </button>
+      </div>
+
+      <form id="form">
+        <div class="mt-4" id="data-table">
+          <p>
+            データを表示したい行を選択して「データを表示」ボタンをクリックしてください
+          </p>
+        </div>
+        <div class="mt-4">
+          <button type="submit" class="button is-primary is-fullwidth">
+            チェックを反映
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // 表示データ更新
+      const renderDataTable = (data) => {
+        const dataTableEl = document.getElementById("data-table");
+        dataTableEl.innerHTML = "";
+        for (let i = 0; i < data[0].length; i++) {
+          const head = data[0][i];
+          const type = data[1][i];
+          const value = data[2][i];
+          let content = "";
+          switch (type) {
+            case "データ":
+              content = value;
+              break;
+            case "チェック":
+              content = `
+                <label class="radio">
+                  <input type="radio" name="${i}" value="OK">
+                  OK
+                </label>
+                <label class="radio ml-2">
+                  <input type="radio" name="${i}" value="NG">
+                  NG
+                </label>
+              `;
+              break;
+            case "日付":
+              content = `<input class="input" type="date" name="${i}" />`;
+              break;
+            case "入力":
+              content = `<input class="input" type="text" name="${i}" />`;
+              break;
+            default:
+          }
+          const element = `
+            <div class="field">
+              <div class="label">${head}</div>
+              <div class="control">${content}</div>
+            </div>
+          `;
+          dataTableEl.insertAdjacentHTML("beforeend", element);
+        }
+      };
+
+      const showDataButton = document.getElementById("show-data");
+      showDataButton.addEventListener("click", () => {
+        google.script.run.withSuccessHandler(renderDataTable).getCheckData();
+      });
+
+      // 実行
+      const form = document.getElementById("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        google.script.run
+          .withSuccessHandler(() => {
+            // alert("入力データをシートに反映しました");
+            // console.log("入力データをシートに反映しました");
+          })
+          .formDataToSheet(formData);
+      });
+    </script>
   </body>
 </html>
