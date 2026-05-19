@@ -5,6 +5,7 @@
       "@/*": ["./src/*"],
       "@common/*": ["./src/utils/common/*"],
       "@document/*": ["./src/utils/document/*"],
+      "@drive/*": ["./src/utils/drive/*"],
       "@calendar/*": ["./src/utils/calendar/*"],
       "@spreadsheet/*": ["./src/utils/spreadsheet/*"]
     }

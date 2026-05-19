@@ -6,6 +6,9 @@
   - jsファイル複数
   - htmlファイルはコピーでなくejsとかxhtmlとか使う
 - Advanced Google Servicesの利用試したい
+- 参考
+  - https://qiita.com/ref3000/items/3ac669620fac34bbab4f
+  - https://hajiritsu.com/gas-spreadsheet-insert-image/
 
 ## GAS以外の機能
 

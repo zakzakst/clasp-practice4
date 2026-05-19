@@ -9,7 +9,11 @@ await esbuild.build({
     // NOTE: `JSON.stringify`は必要 ※利用しないと文字列の前後にダブルコートがつかない
     "process.env.SHEET_ID": JSON.stringify(process.env.SHEET_ID ?? ""),
   },
-  entryPoints: ["src/index.ts", "src/checkForm.ts"],
+  entryPoints: [
+    "src/index.ts",
+    "src/checkForm.ts",
+    "src/insertImagesFromDrive.ts",
+  ],
   format: "cjs",
   outdir: "dist",
   platform: "browser",
