@@ -35,14 +35,19 @@
     </div>
 
     <script>
+      const body = document.body;
       // 表示データ更新
-      const renderDataTable = (data) => {
+      const renderDataTable = ({ rowIndex, values }) => {
+        // 選択行のデータ保持
+        body.dataset.rowIndex = rowIndex;
+        // データを表示
         const dataTableEl = document.getElementById("data-table");
         dataTableEl.innerHTML = "";
-        for (let i = 0; i < data[0].length; i++) {
-          const head = data[0][i];
-          const type = data[1][i];
-          const value = data[2][i];
+        for (let i = 0; i < values[0].length; i++) {
+          const head = values[0][i];
+          const type = values[1][i];
+          const value = values[2][i];
+          const colIndex = i + 1;
           let content = "";
           switch (type) {
             case "データ":
@@ -51,20 +56,20 @@
             case "チェック":
               content = `
                 <label class="radio">
-                  <input type="radio" name="${i}" value="OK">
+                  <input type="radio" name="${colIndex}" value="OK">
                   OK
                 </label>
                 <label class="radio ml-2">
-                  <input type="radio" name="${i}" value="NG">
+                  <input type="radio" name="${colIndex}" value="NG">
                   NG
                 </label>
               `;
               break;
             case "日付":
-              content = `<input class="input" type="date" name="${i}" />`;
+              content = `<input class="input" type="date" name="${colIndex}" />`;
               break;
             case "入力":
-              content = `<input class="input" type="text" name="${i}" />`;
+              content = `<input class="input" type="text" name="${colIndex}" />`;
               break;
             default:
           }
@@ -90,14 +95,14 @@
         const formData = new FormData(form);
         // NOTE: FormDataをgoogle.script.runの引数でやり取りできないようなのでデータを加工する
         const inputData = [...formData.entries()].map(([indexStr, value]) => ({
-          index: Number(indexStr),
+          colIndex: Number(indexStr),
           value,
         }));
         google.script.run
           .withSuccessHandler(() => {
             alert("入力データをシートに反映しました");
           })
-          .formDataToSheet(inputData);
+          .formDataToSheet(body.dataset.rowIndex, inputData);
       });
     </script>
   </body>
