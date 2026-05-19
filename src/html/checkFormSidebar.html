@@ -88,12 +88,16 @@
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const formData = new FormData(form);
+        // NOTE: FormDataをgoogle.script.runの引数でやり取りできないようなのでデータを加工する
+        const inputData = [...formData.entries()].map(([indexStr, value]) => ({
+          index: Number(indexStr),
+          value,
+        }));
         google.script.run
           .withSuccessHandler(() => {
-            // alert("入力データをシートに反映しました");
-            // console.log("入力データをシートに反映しました");
+            alert("入力データをシートに反映しました");
           })
-          .formDataToSheet(formData);
+          .formDataToSheet(inputData);
       });
     </script>
   </body>
